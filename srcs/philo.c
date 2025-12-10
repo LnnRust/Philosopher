@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/10 16:31:45 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/10 16:42:44 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	init_philo(t_data *data)
 	return (true);
 }
 
-pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
+// pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
 
 int	main(int ac, char **av)
 {
@@ -80,11 +80,11 @@ int	main(int ac, char **av)
 			return (0);
 		if(!init_struct(data, ac, av));
 		{
-			//free(); clean up tout et return; //
+			// free(); clean up tout et return; //
 		}
 		if(!init_philo(data));
 		{
-			//free(); clean up tout et return //
+			// free(); clean up tout et return //
 		}
 
 	}
