@@ -1,4 +1,6 @@
-/* ************************************************************************** */
+\\
+\
+\* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
@@ -6,7 +8,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/07 03:44:20 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/09 13:38:12 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +20,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <sys/time.h>
 
 typedef struct s_data t_data;
 
@@ -33,6 +36,12 @@ typedef struct s_philo
 	t_data			*all;
 }	t_philo;
 
+typedef struct s_timeval
+{
+	time_t		tv_sec; //	secondes
+	suseconds_t	tv_usec; //	microsecondes
+}	t_timeval;
+
 typedef struct s_data
 {
 	int				phil_num; // 	ac 1
@@ -40,6 +49,7 @@ typedef struct s_data
 	long long		ttd; // 		ac 2
 	long long		tts; // 		ac 3
 	long long		tte;
+	long long		start_time;
 	bool			is_dead;
 
 	t_philo			*philo;

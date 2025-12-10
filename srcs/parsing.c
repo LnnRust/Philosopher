@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:03:37 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/07 03:43:57 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/09 17:20:56 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ bool	parse_args(int ac,char **av)
 {
 	if(ac != 5 && ac != 6)
 		return (false);
-	if(ac == 5)
+	if(ac == 5 || ac == 6)
 		if(!check_values(ac, av))
 		return (false);
-
-
+	return (true);
 }
