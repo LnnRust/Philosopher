@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/10 11:26:54 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/11 14:43:35 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <sys/time.h>
+#include <stdio.h>
 
 typedef struct s_data t_data;
 
@@ -56,5 +57,7 @@ bool	parse_args(int ac,char **av);
 
 //utils
 int		ft_atol(const char *str);
+long long	get_start_time(void);
+long long get_actual_time(t_data *data);
 
 #endif
