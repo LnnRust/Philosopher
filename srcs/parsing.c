@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:03:37 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/09 17:20:56 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/11 09:44:15 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	ft_isdigit(int c)
 	return (false);
 }
 
-static bool	check_values(int ac, char **av)
+static bool	check_values(char **av)
 {
 	int	i;
 	int	j;
@@ -28,7 +28,7 @@ static bool	check_values(int ac, char **av)
 	while (av[i])
 	{
 		j = 0;
-		if(ft_atol(av[i]) < 0 || ft_atol(av[i] > INT_MAX))
+		if(ft_atol(av[i]) < 0 || ft_atol(av[i]) > INT_MAX)
 			return (printf("invalid arg value"), false);
 		while (av[i][j])
 		{
@@ -46,7 +46,7 @@ bool	parse_args(int ac,char **av)
 	if(ac != 5 && ac != 6)
 		return (false);
 	if(ac == 5 || ac == 6)
-		if(!check_values(ac, av))
+		if(!check_values(av))
 		return (false);
 	return (true);
 }

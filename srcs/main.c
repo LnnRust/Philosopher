@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/10 16:42:44 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/11 10:53:42 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	init_philo(t_data *data)
 	while(i < data->phil_num)
 	{
 		//data->philo[i].thread = pas besoin d init ici car init avec pthread_create
-		data ->philo[i].id = i + 1;
+		data->philo[i].id = i + 1;
 		data->philo[i].eaten = 0;
 		data->philo[i].last_eat = data->start_time;
 		data->philo[i].l_fork = &data->fork[i];
@@ -69,24 +69,21 @@ bool	init_philo(t_data *data)
 int	main(int ac, char **av)
 {
 	t_data		*data;
-	pthread_t	*thread;
 
+	if (ac != 6)
+		return (EXIT_FAILURE);
 	data = malloc(sizeof(data));
-	if(!data)
-		return (free(data), NULL);
-	if (ac == 6)
+	if(!data || !parse_args(ac, av))
+		return (EXIT_FAILURE);
+	if(!init_struct(data, ac, av))
 	{
-		if (parse_args(ac, av) == false);
-			return (0);
-		if(!init_struct(data, ac, av));
-		{
-			// free(); clean up tout et return; //
-		}
-		if(!init_philo(data));
-		{
-			// free(); clean up tout et return //
-		}
-
+		return 1;
+		// free(); clean up tout et return; //
+	}
+	if(!init_philo(data))
+	{
+		return 1;
+		// free(); clean up tout et return //
 	}
 	return (0);
 }

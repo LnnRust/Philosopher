@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:07:08 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/10 14:46:56 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/11 10:58:13 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,19 @@ int	ft_atol(const char *str)
 long long	get_start_time(void)
 {
 	long long start_time;
-	struct timeval *tv;
+	struct timeval tv;
 
-	gettimeofday(tv, NULL);
-	start_time = (tv->tv_sec * 1000) + (tv->tv_usec / 1000);
+	gettimeofday(&tv, NULL);
+	start_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (start_time);
+}
+
+long long get_actual_time(t_data *data)
+{
+	long long start;
+	long long actual;
+
+	start = get_start_time();
+	actual = start - data->start_time;
+	return (actual);
 }
