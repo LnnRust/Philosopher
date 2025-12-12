@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/11 14:45:06 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/12 08:18:24 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 //gerer les erreurs : cas ou erreur mutex_init -> mutex_destroy
-bool	init_struct(t_data *data, int ac, char **av)
+static bool	init_struct(t_data *data, int ac, char **av)
 {
 	int i;
 
@@ -43,7 +43,24 @@ bool	init_struct(t_data *data, int ac, char **av)
 	return (true);
 }
 
-bool	init_philo(t_data *data)
+static bool	create_philos(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while(i < data->phil_num)
+	{
+		if(pthread_create(&data->philo[i].thread, NULL, routine, &data->philo[i]) != 0)
+		{
+			printf("Error, failed to create philosopher\n");
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
+static bool	init_philo(t_data *data)
 {
 	int i;
 
@@ -62,6 +79,18 @@ bool	init_philo(t_data *data)
 		i++;
 	}
 	return (true);
+}
+
+void	join_philos(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->phil_num)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
 }
 
 // pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
@@ -85,9 +114,9 @@ int	main(int ac, char **av)
 		return 1;
 		// free(); clean up tout et return //
 	}
+	if(!create_philos(data))
+		return (1);
+	join_philos(data);
+	//clean et exit //
 	return (0);
 }
-
-// pour eviter les bugs avec le cas philo[n -1] -> fourchette n -1 et 0
-// philo[i].left = &fork[i];
-//philo[i].right = &fork[(i + 1) % phil_num];
