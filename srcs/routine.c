@@ -6,13 +6,13 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/11 16:16:48 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/12 08:15:20 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	time_since_meal(t_philo *philo)
+long long	time_since_meal(t_philo *philo)
 {
 	long long	current_time;
 	long long	time_since_last_meal;
@@ -26,10 +26,10 @@ int	time_since_meal(t_philo *philo)
 
 int	isDead(t_philo *philo)
 {
-	long long last_meal;
+	long long last_meal_time;
 
-	last_meal = time_since_meal(philo);
-	if (last_meal > philo->data->ttd)
+	last_meal_time = time_since_meal(philo);
+	if (last_meal_time > philo->data->ttd)
 	{
 		pthread_mutex_lock(&philo->data->dead);
 		if (!philo->data->is_dead)
@@ -50,7 +50,7 @@ int	isDead(t_philo *philo)
 bool	someone_died(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->dead);
-	if(&philo->data->is_dead == 1)
+	if(philo->data->is_dead == 1)
 	{
 		pthread_mutex_unlock(&philo->data->dead);
 		return (true);
@@ -73,35 +73,10 @@ void	safe_print(t_philo *philo, char *action, bool	dead_philo)
 
 void	one_philo_case(t_philo *philo)
 {
-	if (philo->data->phil_num == 1)
-	{
-		pthread_mutex_lock(philo->l_fork);
-		safe_print(philo, "has taken a fork", false);
-		usleep(philo->data->ttd * 1000);
-		pthread_mutex_unlock(philo->l_fork);
-		return (NULL);
-	}
-}
-
-void	*routine(void *arg)
-{
-	t_philo		*philo;
-
-	philo = (t_philo *)arg;
-	if (philo->data->phil_num == 1)
-		return (one_philo_case(philo), NULL);
-	while (1)
-	{
-		pthread_mutex_lock(&philo->data->dead);
-		if(philo->data->is_dead)
-		{
-			pthread_mutex_unlock(&philo->data->is_dead);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->data->is_dead);
-		handle_forks(philo);
-	}
-	return (NULL);
+	pthread_mutex_lock(philo->l_fork);
+	safe_print(philo, "has taken a fork", false);
+	usleep(philo->data->ttd * 1000);
+	pthread_mutex_unlock(philo->l_fork);
 }
 
 void	handle_forks(t_philo *philo)
@@ -121,4 +96,25 @@ void	handle_forks(t_philo *philo)
 	safe_print(philo, "is sleeping", false);
 	usleep(philo->data->tts * 1000);
 	safe_print(philo, "is thinking", false);
+}
+
+void	*routine(void *arg)
+{
+	t_philo		*philo;
+
+	philo = (t_philo *)arg;
+	if (philo->data->phil_num == 1)
+		return (one_philo_case(philo), NULL);
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->dead);
+		if(philo->data->is_dead)
+		{
+			pthread_mutex_unlock(&philo->data->dead);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->dead);
+		handle_forks(philo);
+	}
+	return (NULL);
 }
