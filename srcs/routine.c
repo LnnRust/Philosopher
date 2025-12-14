@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/12 08:15:20 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/14 09:49:14 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,9 @@ int	isDead(t_philo *philo)
 			printf("%lld %d died\n", get_actual_time(philo->data), philo->id);
 			pthread_mutex_unlock(&philo->data->print);
 		}
-
 		pthread_mutex_unlock(&philo->data->dead);
 		return (1);
 	}
-
 	return (0);
 }
 
@@ -100,20 +98,23 @@ void	handle_forks(t_philo *philo)
 
 void	*routine(void *arg)
 {
-	t_philo		*philo;
+	t_philo	*philo;
+	int		i;
 
 	philo = (t_philo *)arg;
 	if (philo->data->phil_num == 1)
 		return (one_philo_case(philo), NULL);
+	if (philo->id % 2 == 0) // evite deadlock //
+		usleep(100);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->data->dead);
-		if(philo->data->is_dead)
+		i = 0;
+		while (i < philo->data->phil_num)
 		{
-			pthread_mutex_unlock(&philo->data->dead);
-			break ;
+			if (isDead(&philo->data->philo[i]))
+				return (NULL);
+			i++;
 		}
-		pthread_mutex_unlock(&philo->data->dead);
 		handle_forks(philo);
 	}
 	return (NULL);
