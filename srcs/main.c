@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/14 07:59:24 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/15 15:43:38 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static bool	init_philo(t_data *data)
 	return (true);
 }
 
-void	join_philos(t_data *data)
+static void	join_philos(t_data *data)
 {
 	int	i;
 
@@ -93,30 +93,26 @@ void	join_philos(t_data *data)
 	}
 }
 
-// pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
-
 int	main(int ac, char **av)
 {
 	t_data		*data;
 
-	if (ac != 6)
-		return (EXIT_FAILURE);
-	data = malloc(sizeof(data));
+	data = malloc(sizeof(t_data));
 	if(!data || !parse_args(ac, av))
 		return (EXIT_FAILURE);
 	if(!init_struct(data, ac, av))
 	{
-		return 1;
+		return (EXIT_FAILURE);
 		// free(); clean up tout et return; //
 	}
 	if(!init_philo(data))
 	{
-		return 1;
+		return (EXIT_FAILURE);
 		// free(); clean up tout et return //
 	}
 	if(!create_philos(data))
-		return (1);
+		return (EXIT_FAILURE);
 	join_philos(data);
 	//clean et exit //
-	return (0);
+	return (EXIT_SUCCESS);
 }

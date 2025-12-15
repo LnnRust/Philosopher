@@ -6,13 +6,13 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:07:08 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/11 10:58:13 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/15 16:54:30 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	ft_atol(const char *str)
+long long	ft_atol(const char *str)
 {
 	long int	result;
 	long int	i;
@@ -34,6 +34,7 @@ int	ft_atol(const char *str)
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
+
 	return (sign * result);
 }
 
@@ -56,3 +57,5 @@ long long get_actual_time(t_data *data)
 	actual = start - data->start_time;
 	return (actual);
 }
+
+

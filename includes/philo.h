@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/11 14:43:35 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/15 18:33:17 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,17 @@ typedef struct s_data
 bool	parse_args(int ac,char **av);
 
 //utils
-int		ft_atol(const char *str);
+long long		ft_atol(const char *str);
 long long	get_start_time(void);
-long long get_actual_time(t_data *data);
+long long 	get_actual_time(t_data *data);
+long long	time_since_meal(t_philo *philo);
+int			isDead(t_philo *philo);
+bool		someone_died(t_philo *philo);
+void		safe_print(t_philo *philo, char *action, bool	dead_philo);
+void		one_philo_case(t_philo *philo);
+void		*routine(void *arg);
+bool		check_finished(t_data *data);
+void	even_philo(t_philo *philo);
+void	odd_philo(t_philo *philo);
 
 #endif

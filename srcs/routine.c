@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/14 09:49:14 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/15 18:34:39 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	one_philo_case(t_philo *philo)
 	pthread_mutex_unlock(philo->l_fork);
 }
 
-void	handle_forks(t_philo *philo)
+void	even_philo(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
 	safe_print(philo, "has taken a fork", false);
@@ -95,6 +95,27 @@ void	handle_forks(t_philo *philo)
 	usleep(philo->data->tts * 1000);
 	safe_print(philo, "is thinking", false);
 }
+
+void	odd_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->r_fork);
+	safe_print(philo, "has taken a fork", false);
+	pthread_mutex_lock(philo->l_fork);
+	safe_print(philo, "has taken a fork", false);
+	safe_print(philo, "is eating", false);
+	pthread_mutex_lock(&philo->meal);
+	philo->last_eat = get_start_time();
+	philo->eaten++;
+	pthread_mutex_unlock(&philo->meal);
+	usleep(philo->data->tte * 1000);
+	pthread_mutex_unlock(philo->l_fork);
+	pthread_mutex_unlock(philo->r_fork);
+	safe_print(philo, "is sleeping", false);
+	usleep(philo->data->tts * 1000);
+	safe_print(philo, "is thinking", false);
+}
+
+//si philo pair, prendre a gauche en premier, si impair prendre a droite
 
 void	*routine(void *arg)
 {
@@ -114,8 +135,13 @@ void	*routine(void *arg)
 			if (isDead(&philo->data->philo[i]))
 				return (NULL);
 			i++;
+			if(philo[i].eaten == philo->data->num_to_eat)
+				break ;
 		}
-		handle_forks(philo);
+		if(philo->id % 2 == 0)
+			even_philo(philo);
+		else
+			odd_philo(philo);
 	}
 	return (NULL);
 }
