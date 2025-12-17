@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/15 18:33:17 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/17 21:39:40 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ void		*routine(void *arg);
 bool		check_finished(t_data *data);
 void	even_philo(t_philo *philo);
 void	odd_philo(t_philo *philo);
+void	*monitor(void *arg);
 
 #endif

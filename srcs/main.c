@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/17 19:29:34 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/17 21:43:15 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,26 +93,65 @@ static void	join_philos(t_data *data)
 	}
 }
 
-int	main(int ac, char **av)
+void *monitor(void *arg)
 {
-	t_data		*data;
+	t_data *data;
+	int i;
+	int all_done;
+
+	all_done = 1;
+	data = (t_data *)arg;
+
+	while (1)
+	{
+		i = 0;
+		while (i < data->phil_num)
+		{
+			if (isDead(&data->philo[i]))
+				return (NULL);
+			i++;
+		}
+		if (data->num_to_eat != -1)
+		{
+			i = 0;
+			while (i < data->phil_num)
+			{
+				pthread_mutex_lock(&data->philo[i].meal);
+				if (data->philo[i].eaten < data->num_to_eat)
+					all_done = 0;
+				pthread_mutex_unlock(&data->philo[i].meal);
+				i++;
+			}
+			if (all_done)
+			{
+				pthread_mutex_lock(&data->dead);
+				data->is_dead = 1;
+				pthread_mutex_unlock(&data->dead);
+				return (NULL);
+			}
+		}
+		usleep(1000); // check tt les 1ms
+	}
+	return (NULL);
+}
+
+int main(int ac, char **av)
+{
+	t_data *data;
+	pthread_t monitor_t;
 
 	data = malloc(sizeof(t_data));
 	if(!data || !parse_args(ac, av))
 		return (EXIT_FAILURE);
 	if(!init_struct(data, ac, av))
-	{
 		return (EXIT_FAILURE);
-		// free(); clean up tout et return; //
-	}
 	if(!init_philo(data))
-	{
 		return (EXIT_FAILURE);
-		// free(); clean up tout et return //
-	}
 	if(!create_philos(data))
 		return (EXIT_FAILURE);
+	if(pthread_create(&monitor_t, NULL, monitor, data) != 0)
+		return (EXIT_FAILURE);
+	pthread_join(monitor_t, NULL);
 	join_philos(data);
-	//clean et exit //
 	return (EXIT_SUCCESS);
 }

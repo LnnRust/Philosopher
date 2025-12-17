@@ -6,25 +6,21 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/17 19:30:01 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/17 21:05:33 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long long	time_since_meal(t_philo *philo)
+long long time_since_meal(t_philo *philo)
 {
-	long long	current_time;
-	long long	time_since_last_meal;
-
-	current_time = get_start_time();
+	long long current_time = get_start_time();
+	long long time_since;
 
 	pthread_mutex_lock(&philo->meal);
-	time_since_last_meal = current_time - philo->last_eat;
-	printf("valeur de last_eat %lld\n", philo->last_eat);
-	printf("valeur de since last meal %lld\n", time_since_last_meal);
+	time_since = current_time - philo->last_eat;
 	pthread_mutex_unlock(&philo->meal);
-	return (time_since_last_meal);
+	return (time_since);
 }
 
 int	isDead(t_philo *philo)
@@ -121,31 +117,32 @@ void	odd_philo(t_philo *philo)
 
 //si philo pair, prendre a gauche en premier, si impair prendre a droite
 
-void	*routine(void *arg)
+void *routine(void *arg)
 {
-	t_philo	*philo;
-	int		i;
+	t_philo *philo = (t_philo *)arg;
 
-	philo = (t_philo *)arg;
 	if (philo->data->phil_num == 1)
 		return (one_philo_case(philo), NULL);
-	if (philo->id % 2 == 0) // evite deadlock //
+
+	if (philo->id % 2 == 0)
 		usleep(100);
-	while (1)
+
+	while (!someone_died(philo))
 	{
-		i = 0;
-		while (i < philo->data->phil_num)
-		{
-			if (isDead(&philo->data->philo[i]))
-				return (NULL);
-			i++;
-			if(philo[i].eaten == philo->data->num_to_eat)
-				break ;
-		}
-		if(philo->id % 2 == 0)
+		if (philo->id % 2 == 0)
 			even_philo(philo);
 		else
 			odd_philo(philo);
+
+		// Vérifie si ce philo a assez mangé
+		pthread_mutex_lock(&philo->meal);
+		if (philo->data->num_to_eat != -1 &&
+			philo->eaten >= philo->data->num_to_eat)
+		{
+			pthread_mutex_unlock(&philo->meal);
+			break;
+		}
+		pthread_mutex_unlock(&philo->meal);
 	}
 	return (NULL);
 }
