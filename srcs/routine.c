@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/15 18:34:39 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/17 19:30:01 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ long long	time_since_meal(t_philo *philo)
 	long long	time_since_last_meal;
 
 	current_time = get_start_time();
+
 	pthread_mutex_lock(&philo->meal);
 	time_since_last_meal = current_time - philo->last_eat;
+	printf("valeur de last_eat %lld\n", philo->last_eat);
+	printf("valeur de since last meal %lld\n", time_since_last_meal);
 	pthread_mutex_unlock(&philo->meal);
 	return (time_since_last_meal);
 }
@@ -29,7 +32,7 @@ int	isDead(t_philo *philo)
 	long long last_meal_time;
 
 	last_meal_time = time_since_meal(philo);
-	if (last_meal_time > philo->data->ttd)
+	if (last_meal_time >= philo->data->ttd)
 	{
 		pthread_mutex_lock(&philo->data->dead);
 		if (!philo->data->is_dead)
@@ -74,6 +77,7 @@ void	one_philo_case(t_philo *philo)
 	pthread_mutex_lock(philo->l_fork);
 	safe_print(philo, "has taken a fork", false);
 	usleep(philo->data->ttd * 1000);
+	safe_print(philo, "is dead", true);
 	pthread_mutex_unlock(philo->l_fork);
 }
 

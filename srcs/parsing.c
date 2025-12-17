@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:03:37 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/15 14:07:59 by aandreo          ###   ########.fr       */
+/*   Updated: 2025/12/17 19:20:08 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static bool	ft_isdigit(int c)
 		return (true);
 	return (false);
 }
-//TODO gerer parsing philo (200) max | check si atol(av[i] > LONG_MAX );
 
 static bool	check_values(char **av)
 {
@@ -31,10 +30,10 @@ static bool	check_values(char **av)
 		j = 0;
 		if (i == 1)
 		{
-			if (ft_atol(av[i]) < 0 || ft_atol(av[i]) > 200)
+			if (ft_atol(av[i]) < 1 || ft_atol(av[i]) > 200)
 				return (printf("invalid arg value"), false);
 		}
-		else if (ft_atol(av[i]) < 0 || ft_atol(av[i]) > LONG_MAX)
+		else if (ft_atol(av[i]) < 1 || ft_atol(av[i]) > INT_MAX)
 			return (printf("invalid arg value"), false);
 		while (av[i][j])
 		{
