@@ -1,42 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/07 03:07:08 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/15 16:54:30 by aandreo          ###   ########.fr       */
+/*   Created: 2026/01/02 15:53:34 by aandreo           #+#    #+#             */
+/*   Updated: 2026/01/02 16:23:12 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
-
-long long	ft_atol(const char *str)
-{
-	long int	result;
-	long int	i;
-	long int	sign;
-
-	i = 0;
-	result = 0;
-	sign = 1;
-	while ((str[i] > 8 && str[i] < 14) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-
-	return (sign * result);
-}
+#include "../../includes/philo.h"
 
 long long	get_start_time(void)
 {
@@ -58,4 +32,14 @@ long long get_actual_time(t_data *data)
 	return (actual);
 }
 
+long long time_since_meal(t_philo *philo)
+{
+	long long current_time;
+	long long time_since;
 
+	pthread_mutex_lock(&philo->meal);
+	current_time = get_actual_time(philo->data);
+	time_since = current_time - philo->last_eat;
+	pthread_mutex_unlock(&philo->meal);
+	return (time_since);
+}

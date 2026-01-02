@@ -6,69 +6,11 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/18 20:14:36 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/02 16:39:39 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-long long time_since_meal(t_philo *philo)
-{
-	long long current_time;
-	long long time_since;
-
-	pthread_mutex_lock(&philo->meal);
-	current_time = get_actual_time(philo->data);
-	time_since = current_time - philo->last_eat;
-	pthread_mutex_unlock(&philo->meal);
-	return (time_since);
-}
-
-bool	someone_died(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->dead);
-	if(philo->data->is_dead == 1)
-	{
-		pthread_mutex_unlock(&philo->data->dead);
-		return (true);
-	}
-	pthread_mutex_unlock(&philo->data->dead);
-	return (false);
-}
-
-int	isDead(t_philo *philo)
-{
-	long long last_meal_time;
-
-	last_meal_time = time_since_meal(philo);
-	if (last_meal_time >= philo->data->ttd)
-	{
-		pthread_mutex_lock(&philo->data->dead);
-		if (!philo->data->is_dead)
-			philo->data->is_dead = 1;
-		pthread_mutex_unlock(&philo->data->dead);
-		return (1);
-	}
-	return (0);
-}
-
-void	safe_print(t_philo *philo, char *action, bool	dead_philo)
-{
-	long long timestamp;
-
-	pthread_mutex_lock(&philo->data->print);
-	pthread_mutex_lock(&philo->data->dead);
-	if (philo->data->is_dead && !dead_philo)
-	{
-		pthread_mutex_unlock(&philo->data->dead);
-		pthread_mutex_unlock(&philo->data->print);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->data->dead);
-	timestamp = get_actual_time(philo->data);
-	printf("%lld %d %s\n", timestamp, philo->id, action);
-	pthread_mutex_unlock(&philo->data->print);
-}
 
 void	one_philo_case(t_philo *philo)
 {
@@ -121,7 +63,7 @@ void	odd_philo(t_philo *philo)
 void *routine(void *arg)
 {
 	t_philo *philo = (t_philo *)arg;
-	
+
 	while (!someone_died(philo))
 	{
 		if (philo->id % 2 == 0)

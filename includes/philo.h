@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/17 21:39:40 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/02 16:41:04 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,8 @@ bool		check_finished(t_data *data);
 void	even_philo(t_philo *philo);
 void	odd_philo(t_philo *philo);
 void	*monitor(void *arg);
+void	join_philos(t_data *data);
+bool	init_philo(t_data *data);
+bool	create_philos(t_data *data);
 
 #endif

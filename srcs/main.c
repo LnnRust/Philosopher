@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/18 18:24:30 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/02 16:32:14 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,97 +40,6 @@ static bool	init_struct(t_data *data, int ac, char **av)
 	while (++i < data->phil_num)
 		pthread_mutex_init(&data->fork[i], NULL);
 	return (true);
-}
-
-static bool	create_philos(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while(i < data->phil_num)
-	{
-		if(pthread_create(&data->philo[i].thread, NULL, routine, &data->philo[i]) != 0)
-		{
-			printf("Error, failed to create philosopher\n");
-			return (false);
-		}
-		i++;
-	}
-	return (true);
-}
-
-static bool	init_philo(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while(i < data->phil_num)
-	{
-		//data->philo[i].thread = pas besoin d init ici car init avec pthread_create
-		data->philo[i].id = i + 1;
-		data->philo[i].eaten = 0;
-		data->philo[i].last_eat = data->start_time;
-		data->philo[i].l_fork = &data->fork[i];
-		data->philo[i].r_fork = &data->fork[(i + 1) % data->phil_num];
-		data->philo[i].data = data;
-		if(pthread_mutex_init(&data->philo[i].meal, NULL) != 0)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-static void	join_philos(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->phil_num)
-	{
-		pthread_join(data->philo[i].thread, NULL);
-		i++;
-	}
-}
-
-void *monitor(void *arg)
-{
-	t_data	*data;
-	int		i;
-	int		all_done;
-
-	all_done = 1;
-	data = (t_data *)arg;
-	while (1)
-	{
-		i = 0;
-		while (++i < data->phil_num)
-		{
-			if (isDead(&data->philo[i]))
-			return (NULL);
-			i++;
-		}
-		if (data->num_to_eat != -1)
-		{
-			i = 0;
-			while (i < data->phil_num)
-			{
-				pthread_mutex_lock(&data->philo[i].meal);
-				if (data->philo[i].eaten < data->num_to_eat)
-					all_done = 0;
-				pthread_mutex_unlock(&data->philo[i].meal);
-				i++;
-			}
-			if (all_done)
-			{
-				pthread_mutex_lock(&data->dead);
-				data->is_dead = 1;
-				pthread_mutex_unlock(&data->dead);
-				return (NULL);
-			}
-		}
-		usleep(1000); // check tt les 1ms
-	}
-	return (NULL);
 }
 
 int main(int ac, char **av)

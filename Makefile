@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+         #
+#    By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/11 09:39:00 by aandreo           #+#    #+#              #
-#    Updated: 2025/12/11 11:01:49 by aandreo          ###   ########.fr        #
+#    Updated: 2026/01/02 16:40:05 by aandreo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,11 @@ INC_DIR = include
 SRCS = 	main.c \
 		parsing.c \
 		routine.c \
-		utils.c \
+		monitoring.c \
+		philos_process.c \
+		utils/atol.c \
+		utils/time_utils.c \
+		utils/routine_utils.c \
 
 # Add src/ prefix to sources
 SRC = $(addprefix $(SRC_DIR)/, $(SRCS))
@@ -51,7 +55,7 @@ $(NAME): $(OBJ)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "$(GREEN)✓ Compiled: $<$(RESET)"
 
