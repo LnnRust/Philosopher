@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:53:34 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 10:10:57 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:46:27 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ long long	get_start_time(void)
 
 long long	get_actual_time(t_data *data)
 {
-	long long current;
-	struct timeval tv;
+	long long		current;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	current = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
@@ -42,4 +42,13 @@ long long	time_since_meal(t_philo *philo)
 	time_since = current_time - philo->last_eat;
 	pthread_mutex_unlock(&philo->meal);
 	return (time_since);
+}
+
+void	ft_usleep(long long time_ms, t_data *data)
+{
+	long long	start;
+
+	start = get_actual_time(data);
+	while ((get_actual_time(data) - start) < time_ms)
+		usleep(100);
 }

@@ -6,13 +6,12 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 10:46:16 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:58:00 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-//gerer les erreurs : cas ou erreur mutex_init -> mutex_destroy
 static	bool	init_struct(t_data *data, int ac, char **av)
 {
 	int	i;
@@ -58,7 +57,7 @@ int	main(int ac, char **av)
 		return (EXIT_FAILURE);
 	if (data->phil_num == 1)
 		return (one_philo_case(data->philo), destroy_mutexes(data),
-		cleanup(data), EXIT_SUCCESS);
+			cleanup(data), EXIT_SUCCESS);
 	if (!create_philos(data))
 		return (EXIT_FAILURE);
 	if (pthread_create(&monitor_t, NULL, monitor, data) != 0)

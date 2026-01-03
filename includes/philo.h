@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 09:44:43 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:42:47 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ long long		time_since_meal(t_philo *philo);
 long long		ft_atol(const char *str);
 long long		get_start_time(void);
 long long		get_actual_time(t_data *data);
+void			ft_usleep(long long time_ms, t_data *data);
 int				check_if_dead(t_philo *philo);
 bool			parse_args(int ac, char **av);
 bool			someone_died(t_philo *philo);

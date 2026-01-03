@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:39:44 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 05:11:08 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:42:48 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_if_dead(t_philo *philo)
 
 	should_print = 0;
 	last_meal_time = time_since_meal(philo);
-	if (last_meal_time >= philo->data->ttd)
+	if (last_meal_time > philo->data->ttd)
 	{
 		pthread_mutex_lock(&philo->data->dead);
 		if (!philo->data->is_dead)
@@ -41,7 +41,7 @@ int	check_if_dead(t_philo *philo)
 		}
 		pthread_mutex_unlock(&philo->data->dead);
 		if (should_print)
-			safe_print(philo, "Died", true);
+			safe_print(philo, "died", true);
 		return (1);
 	}
 	return (0);

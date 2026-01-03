@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 12:05:35 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:56:45 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	one_philo_case(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
 	safe_print(philo, "has taken a fork", false);
-	usleep(philo->data->ttd * 1000);
-	safe_print(philo, "is dead", true);
+	ft_usleep(philo->data->ttd, philo->data);
+	safe_print(philo, "died", true);
 	pthread_mutex_unlock(philo->l_fork);
 }
 
@@ -32,14 +32,14 @@ void	even_philo(t_philo *philo)
 	philo->eaten++;
 	pthread_mutex_unlock(&philo->meal);
 	safe_print(philo, "is eating", false);
-	usleep(philo->data->tte * 1000);
+	ft_usleep(philo->data->tte, philo->data);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 	safe_print(philo, "is sleeping", false);
-	usleep(philo->data->tts * 1000);
+	ft_usleep(philo->data->tts, philo->data);
 	safe_print(philo, "is thinking", false);
 	if (philo->data->phil_num % 2 == 1)
-		usleep((philo->data->tte * 2 - philo->data->tts) * 1000);
+		ft_usleep(philo->data->tte, philo->data);
 }
 
 void	odd_philo(t_philo *philo)
@@ -53,14 +53,14 @@ void	odd_philo(t_philo *philo)
 	philo->eaten++;
 	pthread_mutex_unlock(&philo->meal);
 	safe_print(philo, "is eating", false);
-	usleep(philo->data->tte * 1000);
+	ft_usleep(philo->data->tte, philo->data);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 	safe_print(philo, "is sleeping", false);
-	usleep(philo->data->tts * 1000);
+	ft_usleep(philo->data->tts, philo->data);
 	safe_print(philo, "is thinking", false);
 	if (philo->data->phil_num % 2 == 1)
-		usleep((philo->data->tte * 2 - philo->data->tts) * 1000);
+		ft_usleep(philo->data->tte, philo->data);
 }
 
 //si philo pair, prendre a gauche en premier, si impair prendre a droite
@@ -69,6 +69,8 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 == 0)
+		ft_usleep(philo->data->tte / 2, philo->data);
 	while (!someone_died(philo))
 	{
 		if (philo->id % 2 == 0)
@@ -83,7 +85,6 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->meal);
-		usleep(10); // délai minimal
 	}
 	return (NULL);
 }
