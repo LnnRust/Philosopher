@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 09:59:42 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 10:46:16 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	main(int ac, char **av)
 	if (!init_philo(data))
 		return (EXIT_FAILURE);
 	if (data->phil_num == 1)
-		return (one_philo_case(data->philo), cleanup(data),
-			destroy_mutexes(data), EXIT_SUCCESS);
+		return (one_philo_case(data->philo), destroy_mutexes(data),
+		cleanup(data), EXIT_SUCCESS);
 	if (!create_philos(data))
 		return (EXIT_FAILURE);
 	if (pthread_create(&monitor_t, NULL, monitor, data) != 0)

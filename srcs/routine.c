@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 10:36:16 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 12:05:35 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		usleep(philo->data->tte / 2 * 1000);
 	while (!someone_died(philo))
 	{
 		if (philo->id % 2 == 0)
@@ -85,7 +83,7 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->meal);
-		usleep(100);
+		usleep(10); // délai minimal
 	}
 	return (NULL);
 }
