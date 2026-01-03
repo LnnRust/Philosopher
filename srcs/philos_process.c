@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:32:02 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 05:06:41 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 07:28:28 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	init_philo(t_data *data)
 	{
 		data->philo[i].id = i + 1;
 		data->philo[i].eaten = 0;
-		data->philo[i].last_eat = data->start_time;
+		data->philo[i].last_eat = 0;
 		data->philo[i].l_fork = &data->fork[i];
 		data->philo[i].r_fork = &data->fork[(i + 1) % data->phil_num];
 		data->philo[i].data = data;

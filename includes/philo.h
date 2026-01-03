@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:48 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/03 05:32:09 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 09:44:43 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ void			*monitor(void *arg);
 void			join_philos(t_data *data);
 bool			init_philo(t_data *data);
 bool			create_philos(t_data *data);
+void			destroy_mutexes(t_data *data);
+void			cleanup(t_data *data);
 
 #endif

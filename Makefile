@@ -6,7 +6,7 @@
 #    By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/11 09:39:00 by aandreo           #+#    #+#              #
-#    Updated: 2026/01/03 05:32:13 by aandreo          ###   ########.fr        #
+#    Updated: 2026/01/03 07:40:09 by aandreo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCS = 	main.c \
 		utils/atol.c \
 		utils/time_utils.c \
 		utils/routine_utils.c \
+		utils/cleanup.c \
 
 # Add src/ prefix to sources
 SRC = $(addprefix $(SRC_DIR)/, $(SRCS))
