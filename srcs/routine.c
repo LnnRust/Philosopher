@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 14:46:09 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/02 16:39:39 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 05:08:13 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ void	odd_philo(t_philo *philo)
 }
 
 //si philo pair, prendre a gauche en premier, si impair prendre a droite
-void *routine(void *arg)
+void	*routine(void *arg)
 {
-	t_philo *philo = (t_philo *)arg;
+	t_philo	*philo;
 
+	philo = (t_philo *)arg;
 	while (!someone_died(philo))
 	{
 		if (philo->id % 2 == 0)
@@ -71,11 +72,11 @@ void *routine(void *arg)
 		else
 			odd_philo(philo);
 		pthread_mutex_lock(&philo->meal);
-		if (philo->data->num_to_eat != -1 &&
-			philo->eaten >= philo->data->num_to_eat)
+		if (philo->data->num_to_eat != -1
+			&& philo->eaten >= philo->data->num_to_eat)
 		{
 			pthread_mutex_unlock(&philo->meal);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&philo->meal);
 	}

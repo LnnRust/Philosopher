@@ -6,13 +6,13 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:30:33 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/02 16:30:52 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 05:13:49 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void *monitor(void *arg)
+void	*monitor(void *arg)
 {
 	t_data	*data;
 	int		i;
@@ -22,12 +22,12 @@ void *monitor(void *arg)
 	data = (t_data *)arg;
 	while (1)
 	{
-		i = 0;
+		i = -1;
+		all_done = 1;
 		while (++i < data->phil_num)
 		{
-			if (isDead(&data->philo[i]))
-			return (NULL);
-			i++;
+			if (check_if_dead(&data->philo[i]))
+				return (NULL);
 		}
 		if (data->num_to_eat != -1)
 		{
@@ -48,7 +48,7 @@ void *monitor(void *arg)
 				return (NULL);
 			}
 		}
-		usleep(1000); // check tt les 1ms
+		usleep(1000);
 	}
 	return (NULL);
 }

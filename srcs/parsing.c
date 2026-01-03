@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandreo <aandreo@student.42lehavre.fr>     +#+  +:+       +#+        */
+/*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:03:37 by aandreo           #+#    #+#             */
-/*   Updated: 2025/12/17 19:20:08 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 05:04:35 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ static bool	check_values(char **av)
 	return (true);
 }
 
-bool	parse_args(int ac,char **av)
+bool	parse_args(int ac, char **av)
 {
-	if(ac != 5 && ac != 6)
+	if (ac != 5 && ac != 6)
 		return (printf("wrong number of args\n"), false);
-	if(ac == 5 || ac == 6)
-		if(!check_values(av))
-		return (false);
+	if (ac == 5 || ac == 6)
+		if (!check_values(av))
+			return (false);
 	return (true);
 }

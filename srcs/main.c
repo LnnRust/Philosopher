@@ -6,14 +6,14 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 03:28:50 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/02 16:32:14 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 06:03:21 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
 //gerer les erreurs : cas ou erreur mutex_init -> mutex_destroy
-static bool	init_struct(t_data *data, int ac, char **av)
+static	bool	init_struct(t_data *data, int ac, char **av)
 {
 	int	i;
 
@@ -42,25 +42,29 @@ static bool	init_struct(t_data *data, int ac, char **av)
 	return (true);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_data *data;
-	pthread_t monitor_t;
+	t_data		*data;
+	pthread_t	monitor_t;
 
+	if (!parse_args(ac, av))
+		return (EXIT_FAILURE);
 	data = malloc(sizeof(t_data));
-	if(!data || !parse_args(ac, av))
+	if(!data)
 		return (EXIT_FAILURE);
-	if(!init_struct(data, ac, av))
+	if (!init_struct(data, ac, av))
 		return (EXIT_FAILURE);
-	if(!init_philo(data))
+	if (!init_philo(data))
 		return (EXIT_FAILURE);
-	if(data->phil_num == 1)
+	if (data->phil_num == 1)
 		return (one_philo_case(data->philo), EXIT_SUCCESS);
-	if(!create_philos(data))
+	if (!create_philos(data))
 		return (EXIT_FAILURE);
-	if(pthread_create(&monitor_t, NULL, monitor, data) != 0)
+	if (pthread_create(&monitor_t, NULL, monitor, data) != 0)
 		return (EXIT_FAILURE);
 	pthread_join(monitor_t, NULL);
 	join_philos(data);
-	return (EXIT_SUCCESS);
+	free(data->fork);
+	free(data->philo);
+	return (free(data), EXIT_SUCCESS);
 }

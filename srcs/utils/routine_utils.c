@@ -6,7 +6,7 @@
 /*   By: aandreo <aandreo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:39:44 by aandreo           #+#    #+#             */
-/*   Updated: 2026/01/02 16:39:54 by aandreo          ###   ########.fr       */
+/*   Updated: 2026/01/03 05:11:08 by aandreo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	someone_died(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->dead);
-	if(philo->data->is_dead == 1)
+	if (philo->data->is_dead == 1)
 	{
 		pthread_mutex_unlock(&philo->data->dead);
 		return (true);
@@ -24,17 +24,24 @@ bool	someone_died(t_philo *philo)
 	return (false);
 }
 
-int	isDead(t_philo *philo)
+int	check_if_dead(t_philo *philo)
 {
-	long long last_meal_time;
+	int			should_print;
+	long long	last_meal_time;
 
+	should_print = 0;
 	last_meal_time = time_since_meal(philo);
 	if (last_meal_time >= philo->data->ttd)
 	{
 		pthread_mutex_lock(&philo->data->dead);
 		if (!philo->data->is_dead)
+		{
 			philo->data->is_dead = 1;
+			should_print = 1;
+		}
 		pthread_mutex_unlock(&philo->data->dead);
+		if (should_print)
+			safe_print(philo, "Died", true);
 		return (1);
 	}
 	return (0);
@@ -42,7 +49,7 @@ int	isDead(t_philo *philo)
 
 void	safe_print(t_philo *philo, char *action, bool	dead_philo)
 {
-	long long timestamp;
+	long long	timestamp;
 
 	pthread_mutex_lock(&philo->data->print);
 	pthread_mutex_lock(&philo->data->dead);
